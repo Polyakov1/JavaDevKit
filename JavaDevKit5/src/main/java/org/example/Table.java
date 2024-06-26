@@ -4,9 +4,9 @@ import java.util.concurrent.CountDownLatch;
 
 public class Table extends Thread {
     private final int PHILOSOPHER_COUNT = 5;
-    private Fork[] forks;
-    private Philosopher[] philosophers;
-    private CountDownLatch cdl;
+    private final Fork[] forks;
+    private final Philosopher[] philosophers;
+    private final CountDownLatch cdl;
 
 
     public Table() {
@@ -18,14 +18,14 @@ public class Table extends Thread {
 
     @Override
     public void run() {
-        System.out.println("Заседание макаронных мудрецов объявляется открытым");
+        System.out.println("Начинаем встречу");
         try {
             thinkingProcess();
             cdl.await();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("Все философы накушались");
+        System.out.println("Все философы сыты");
     }
 
     public synchronized boolean tryGetForks(int leftFork, int rightFork) {

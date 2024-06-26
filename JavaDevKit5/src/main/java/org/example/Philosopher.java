@@ -12,7 +12,8 @@ public class Philosopher extends Thread {
     private final CountDownLatch cdl;
     private final Table table;
 
-    public Philosopher(String name, Table table, int leftFork, int rightFork, CountDownLatch cdl) {
+    public Philosopher(String name, Table table, int leftFork, int rightFork, CountDownLatch cdl)
+    {
         this.table = table;
         this.name = name;
         this.leftFork = leftFork;
@@ -25,27 +26,29 @@ public class Philosopher extends Thread {
     @Override
     public void run() {
 
-        while (countEat < 3) {
+        int needEat = 3;
+        while (countEat < needEat) {
             try {
                 thinking();
+
                 eating();
             } catch (InterruptedException e) {
                 e.fillInStackTrace();
             }
         }
 
-        System.out.println(name + " наелся до отвала");
+        System.out.println(name + " наелся");
         cdl.countDown();
     }
 
     private void eating() throws InterruptedException {
         if (table.tryGetForks(leftFork, rightFork)) {
-            System.out.println(name + " уплетает вермишель, используя вилки: " + leftFork
+            System.out.println(name + " кушает, используя вилки: " + leftFork
                     + " и " + rightFork);
-            sleep(random.nextLong(3000, 6000));
+            sleep(random.nextLong(300, 600));
             table.putForks(leftFork, rightFork);
-            System.out.println(name + " покушал, можно и помыслить. " +
-                    "Не забыв при этом вернуть вилки " + leftFork + " и " + rightFork);
+            System.out.println(name + " покушал, теперь подумаю. " +
+                    "Не забыл убрать вилки " + leftFork + " и " + rightFork);
             countEat++;
         }
 
